@@ -1,4 +1,0 @@
-JoKyJqDCmoCgsBuk
-akshatmishra026375_db_user
-
-mongodb+srv://akshatmishra026375_db_user:JoKyJqDCmoCgsBuk@cluster0.wkm89vc.mongodb.net/?appName=Cluster0
