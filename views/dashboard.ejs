@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>TinyLink - Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800">
+
+  <%- include('partials/header') %>
+
+  <main class="max-w-4xl mx-auto px-6 py-8 space-y-8">
+
+    <!-- Create card -->
+    <section class="bg-white rounded-2xl shadow-md p-6">
+      <form method="POST" action="/create" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Destination URL</label>
+          <input name="targetUrl" type="url" required placeholder="https://example.com/very/long/url"
+                 class="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Custom code (optional)</label>
+          <input name="code" type="text" pattern="[A-Za-z0-9]{6,8}"
+                 placeholder="6-8 characters, letters or numbers"
+                 class="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200" />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-slate-500">
+            <% if (error) { %>
+              <span class="text-red-600"><%= error %></span>
+            <% } else if (success) { %>
+              <span class="text-green-600"><%= success %></span>
+            <% } %>
+          </div>
+          <button type="submit" class="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium text-white shadow-sm btn-gradient">
+            Create link
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Links card -->
+    <section class="bg-white rounded-2xl shadow-md p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-xl font-semibold">Your links</h3>
+          <p class="text-sm text-slate-500">Filter by code or target URL, then manage with one click.</p>
+        </div>
+
+        <form method="GET" action="/" class="flex items-center gap-3">
+          <input type="text" name="q" value="<%= query %>" placeholder="Search code or URL"
+                 class="border border-slate-200 rounded-full px-4 py-2 text-sm w-72 focus:outline-none" />
+          <a href="/" class="px-3 py-2 rounded-full border border-slate-200 text-sm text-slate-600 hover:bg-slate-50">Clear</a>
+        </form>
+      </div>
+
+      <% if (!links || links.length === 0) { %>
+        <div class="py-12 text-center text-slate-500">No links yet. Create one above to get started.</div>
+      <% } else { %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="text-slate-500">
+              <tr>
+                <th class="px-4 py-3 text-left">CODE</th>
+                <th class="px-4 py-3 text-left">DESTINATION</th>
+                <th class="px-4 py-3 text-right">CLICKS</th>
+                <th class="px-4 py-3 text-left">LAST CLICKED</th>
+                <th class="px-4 py-3 text-left">CREATED</th>
+                <th class="px-4 py-3 text-right">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y">
+              <% links.forEach(link => { %>
+                <tr class="align-top">
+                  <td class="px-4 py-4 font-mono text-sm text-slate-700"><a href="/code/<%= link.code %>" class="hover:underline text-sky-600"><%= link.code %></a></td>
+                  <td class="px-4 py-4 text-xs text-slate-600 max-w-[44ch] truncate"><%= link.targetUrl %></td>
+                  <td class="px-4 py-4 text-right"><%= link.totalClicks %></td>
+                  <td class="px-4 py-4 text-xs text-slate-500"><%= link.lastClicked ? link.lastClicked.toLocaleString() : 'Never' %></td>
+                  <td class="px-4 py-4 text-xs text-slate-500"><%= link.createdAt ? link.createdAt.toLocaleString() : '' %></td>
+                  <td class="px-4 py-4 text-right">
+                    <div class="flex items-center justify-end gap-3">
+                      <button type="button" onclick="navigator.clipboard.writeText('<%= baseUrl %>/<%= link.code %>')" class="text-xs text-sky-600 hover:underline">Copy</button>
+                      <form method="POST" action="/delete/<%= link.code %>" onsubmit="return confirm('Delete this link?');">
+                        <button type="submit" class="text-xs text-red-600 hover:underline">Delete</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </section>
+
+  </main>
+
+  <%- include('partials/footer') %>
+
+</body>
+</html>

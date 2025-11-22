@@ -1,0 +1,20 @@
+{
+  "name": "tinylink-mongo",
+  "version": "1.0.0",
+  "description": "TinyLink URL shortener with MongoDB",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mongoose": "^8.7.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

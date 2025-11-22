@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>TinyLink - Stats</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800">
+
+  <%- include('partials/header') %>
+
+  <main class="max-w-4xl mx-auto px-6 py-8">
+    <section class="bg-white rounded-2xl shadow-md p-6">
+      <% if (notFound) { %>
+        <h2 class="text-lg font-semibold">Link not found</h2>
+        <p class="text-sm text-slate-500 mt-2">No link exists with that code.</p>
+      <% } else { %>
+        <h2 class="text-2xl font-semibold mb-4">Stats for <span class="font-mono text-sky-600"><%= link.code %></span></h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <div class="text-sm text-slate-500">Short URL</div>
+            <div class="font-mono text-sky-600 break-words"><a href="/<%= link.code %>" class="hover:underline"><%= baseUrl %>/<%= link.code %></a></div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="text-sm text-slate-500">Target URL</div>
+            <div class="text-sm break-words text-slate-700"><%= link.targetUrl %></div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="text-sm text-slate-500">Total clicks</div>
+            <div class="text-lg font-semibold"><%= link.totalClicks %></div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="text-sm text-slate-500">Last clicked</div>
+            <div class="text-sm text-slate-700"><%= link.lastClicked ? link.lastClicked.toLocaleString() : 'Never' %></div>
+          </div>
+
+          <div class="space-y-3 md:col-span-2">
+            <div class="text-sm text-slate-500">Created at</div>
+            <div class="text-sm text-slate-700"><%= link.createdAt ? link.createdAt.toLocaleString() : '' %></div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <a href="/" class="px-4 py-2 rounded-full border border-slate-200 text-sm text-slate-700">Back</a>
+          <button onclick="navigator.clipboard.writeText('<%= baseUrl %>/<%= link.code %>')" class="px-4 py-2 rounded-full btn-gradient text-white text-sm">Copy short URL</button>
+        </div>
+      <% } %>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+
+</body>
+</html>

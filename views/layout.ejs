@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= title || "TinyLink" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body class="bg-slate-100 min-h-screen">
+    <header class="bg-white shadow mb-6">
+      <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="/" class="text-xl font-semibold text-slate-800">TinyLink</a>
+        <nav class="space-x-4 text-sm">
+          <a href="/" class="hover:underline">Dashboard</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pb-10">
+      <%- body %>
+    </main>
+
+    <footer class="mt-10 text-center text-xs text-slate-500">
+      TinyLink • Version <%= appVersion %>
+    </footer>
+  </body>
+</html>
